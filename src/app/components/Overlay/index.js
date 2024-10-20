@@ -92,7 +92,7 @@ const OverlayScreen = (props) => {
         </div>
       </div>
       <div className="body">
-        <div onClick={toggleOverlay} className="start-activity" tabIndex="0">
+        <div onClick={toggleOverlay} className="start-activity" tabIndex="-1">
           {props.children}
         </div>
       </div>
