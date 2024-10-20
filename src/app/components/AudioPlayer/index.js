@@ -107,7 +107,7 @@ const AudioPlayer = (props) => {
         onLoadedMetadata={onLoadedMetadata}
       ></audio>
       <button
-        role="button"
+        type="button"
         onClick={(e) => {
           if (!props.play && !props.restartState) {
             audioEl.current.play();
