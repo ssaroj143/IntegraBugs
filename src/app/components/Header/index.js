@@ -20,6 +20,7 @@ const Header = (props) => {
   } = props;
 
   const dropdownButtonRef = useRef(null);
+  const infoButtonRef = useRef(null);
   const [selectedTocItem, setSelectedTocItem] = useState({});
   const [_tocOpened, _setTocOpened] = useState(props.tocOpened);
   let blurTimeout = "";
@@ -97,13 +98,36 @@ const Header = (props) => {
       }
     }, 100);
   };
+  const handleKeyDown = (event) => {
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      infoButtonRef.current.focus();
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      dropdownButtonRef.current.focus();
+    }
+    else if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      dropdownButtonRef.current.focus();
+    }
+    else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      infoButtonRef.current.focus();
+    }
+  };
 
   const infoButtonLabel = overlay ? "Hide Info" : "Show Info";
   const tocContainerClass = `toc-container ${overlay ? "overlay" : ""}`;
   const pdfInfoSectionClass = `pdf-info-section ${overlay ? "overlay" : ""}`;
-
+  useEffect(() => {
+    const headerElement = document.querySelector(`.${ns}-header`);
+    if (headerElement) {
+      headerElement.setAttribute('role', 'application');
+    }
+  }, []);
   return (
-    <header aria-hidden={overlay} className={`${ns}-header`} role="banner">
+    <header aria-hidden={overlay} className={`${ns}-header`} onKeyDown={handleKeyDown} role="banner">
       {props.children}
       <div className="logo" role="img" aria-label={altText.logo}></div>
       <div className={tocContainerClass}>
@@ -173,6 +197,7 @@ const Header = (props) => {
           onClick={toggleOverlay}
           //aria-label={infoButtonLabel}
           className={`info-btn ${overlay ? "active" : ""}`}
+          ref={infoButtonRef}
         >
           <span className="info-btn-text">{infoButtonLabel}</span>
         </button>
