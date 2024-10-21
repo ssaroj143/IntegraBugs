@@ -70,7 +70,7 @@ const OverlayScreen = (props) => {
     <div ref={ref} className={`${ns}-overlay-container ${overlayClasses}`} tabIndex="0">
       <div className="header">
         <div className="logo"></div>
-        <div className="toc-container" aria-hidden="true">
+        <div className="toc-container">
           <div
             className="toc-arrow"
             dangerouslySetInnerHTML={{ __html: svgImages.tocArrow }}
