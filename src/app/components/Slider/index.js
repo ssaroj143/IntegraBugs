@@ -30,7 +30,7 @@ export class Slider extends Component {
         aria-valuetext={`${ariaValueText} ${value}`}
         onInput={(e) => onChange(e.target.value)}
         onChange={(e) => onChange(e.target.value)}
-        className={overlay ? "disable" : ""}
+        className={overlay ? "disable" : "disable notOverlay"}
         style={{ display: isMobileDevice ? "none" : "" }}
       ></input>
     );
