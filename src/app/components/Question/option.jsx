@@ -38,7 +38,7 @@ const Option = (props) => {
       </div>
       {
         option.label ?
-          <span>
+          <span className="add-text-stylus">
             <span
               aria-hidden="true"
               className="option-text"

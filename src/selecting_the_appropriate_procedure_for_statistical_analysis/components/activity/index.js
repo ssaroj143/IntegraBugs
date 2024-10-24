@@ -19,7 +19,7 @@ import LiveTextContainer from "../../containers/LiveTextContainer";
 const Activity = (props) => {
   const { selectedQuestion } = props;
   return (
-    <div className="pehtmlflowcharts-activity-container">
+    <div className="pehtmlflowcharts-activity-container add-Stylus">
       <Header>
         <SkipToContent />
       </Header>
