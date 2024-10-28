@@ -95,7 +95,26 @@ const AudioPlayer = (props) => {
       }
     }
   }, []);
+  // listener for spacebar Play & Pause
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.code === "Space") {
+        event.preventDefault();
+        if (props.play) {
+          audioEl.current.pause();
+          _togglePlay(false);
+        } else {
+          audioEl.current.play();
+          _togglePlay(true);
+        }
+      }
+    };
 
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [props.play, _togglePlay]);
   return (
     <>
       <audio
@@ -110,10 +129,11 @@ const AudioPlayer = (props) => {
         type="button"
         onClick={(e) => {
           if (!props.play && !props.restartState) {
-            audioEl.current.play();
+            audioEl.current.pause();
             //props.togglePlay(!props.play);
             setTimeout(() => {
               audioEl.current.pause();
+              _togglePlay(true)
               if (props.autoPaused) {
                 props.autoPaused(true);
                 updateLiveMessage("Audio is getting played");
