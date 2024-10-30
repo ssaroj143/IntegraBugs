@@ -139,6 +139,7 @@ const Footer = (props) => {
     e.stopPropagation();
     // restart seek baar/ audio
     restartAudio();
+    togglePlay(false);
   };
 
   useEffect(() => {
@@ -220,6 +221,7 @@ const Footer = (props) => {
     } else {
       togglePlay(!play);
     }
+
   };
 
 
@@ -234,7 +236,11 @@ const Footer = (props) => {
       }
     }, 100)
   }
-
+  useEffect(() => {
+    setTimeout(() => {
+      playRef.current?.focus();
+    }, 0);
+  })
   const captionClasses = caption ? "active" : "";
   const _overlay = overlay ? "overlay" : "";
   const timeDivClasses = `timerdiv ${_overlay}`;
