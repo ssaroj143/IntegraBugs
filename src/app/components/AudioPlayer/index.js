@@ -98,7 +98,7 @@ const AudioPlayer = (props) => {
   // listener for spacebar Play & Pause
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.code === "Space") {
+      if (!overlay && event.code === "Space") {
         event.preventDefault();
         if (props.play) {
           audioEl.current.pause();
@@ -110,11 +110,11 @@ const AudioPlayer = (props) => {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [props.play, _togglePlay]);
+  }, [props.play, _togglePlay, overlay]);
   return (
     <>
       <audio
@@ -143,6 +143,8 @@ const AudioPlayer = (props) => {
         }}
         title="go to flowchart"
         aria-label="go to flowchart"
+        tabIndex="0"
+        aria-pressed={props.play}
       >
         Go to Flowchart
       </button>
