@@ -237,10 +237,11 @@ const Footer = (props) => {
     }, 100)
   }
   useEffect(() => {
-    setTimeout(() => {
-      playRef.current?.focus();
-    }, 0);
-  })
+    const body = document.querySelector("body");
+    body.setAttribute('role', 'application');
+    body.setAttribute('aria-hidden', 'true');
+  });
+
   const captionClasses = caption ? "active" : "";
   const _overlay = overlay ? "overlay" : "";
   const timeDivClasses = `timerdiv ${_overlay}`;
