@@ -19,7 +19,6 @@ const QuestionMarker = (props) => {
       const zoomLevel = window.devicePixelRatio;
       if (zoomLevel >= 1 && screenWidth <= 1024) {
         if (zoomLevel >= 1 && screenWidth < 321) {
-          alert(screenWidth);
           setMinGap(8.5);
         } else if (zoomLevel >= 2 && screenWidth <= 512) {
           setMinGap(5.5);
