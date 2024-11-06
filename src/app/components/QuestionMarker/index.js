@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 const QuestionMarker = (props) => {
@@ -12,22 +12,53 @@ const QuestionMarker = (props) => {
     answeredQuestions,
   } = props;
 
+  const [minGap, setMinGap] = useState(2);
+  useEffect(() => {
+    const updateMinGap = () => {
+      const screenWidth = window.innerWidth;
+      const zoomLevel = window.devicePixelRatio;
+      if (zoomLevel >= 1 && screenWidth <= 1024) {
+        if (zoomLevel >= 1 && screenWidth < 321) {
+          setMinGap(8.5);
+        } else if (zoomLevel >= 2 && screenWidth <= 512) {
+          setMinGap(5.5);
+        } else {
+          setMinGap(3);
+        }
+      } else {
+        setMinGap(2);
+      }
+    };
+
+    updateMinGap();
+    window.addEventListener("resize", updateMinGap);
+    return () => window.removeEventListener("resize", updateMinGap);
+  }, []);
+
   const _onClick = (e, marker) => {
     e.stopPropagation();
     onClick(marker);
   };
 
   const calculatePercentage = (time) => {
-    const p = (time / props.duration) * 100;
-    return p;
+    return (time / props.duration) * 100;
   };
+  const adjustedMarkers = markers.reduce((acc, marker, index) => {
+    const left = calculatePercentage(marker.activeTimestamp);
+
+    if (index > 0 && left - acc[index - 1].left < minGap) {
+      acc.push({ ...marker, left: acc[index - 1].left + minGap });
+    } else {
+      acc.push({ ...marker, left });
+    }
+    return acc;
+  }, []);
 
   return (
-    <div aria-hidden={props.overlay} className={`${ns}-question-marker`}>
-      {markers.map((m) => {
+    <div aria-hidden={props.overlay} className={`${ns}-question-marker marker-container`}>
+      {adjustedMarkers.map((m) => {
         const active = m.id == selected && question ? "active" : "";
-        const left = calculatePercentage(m.activeTimestamp) + "%";
-        const visited = answeredQuestions.indexOf(m.id) >= 0 ? "visited" : "";
+        const visited = answeredQuestions.includes(m.id) ? "visited" : "";
         return (
           <button
             key={m.id}
@@ -38,7 +69,7 @@ const QuestionMarker = (props) => {
             aria-hidden={props.overlay}
             onClick={(e) => _onClick(e, m)}
             tabIndex={props.overlay ? "-1" : ""}
-            style={{ left: `calc(${left} - 5px)` }}
+            style={{ left: `calc(${m.left}% - 5px)` }}
             className={`marker ${visited} ${active}`}
           ></button>
         );
@@ -52,7 +83,6 @@ QuestionMarker.propTypes = {
   markers: PropTypes.array.isRequired,
   duration: PropTypes.number.isRequired,
   selected: PropTypes.string.isRequired,
-  currentTime: PropTypes.number.isRequired,
   answeredQuestions: PropTypes.array.isRequired,
 };
 
