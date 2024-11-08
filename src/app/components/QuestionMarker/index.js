@@ -15,7 +15,7 @@ const QuestionMarker = (props) => {
   const [minGap, setMinGap] = useState(2);
   useEffect(() => {
     const updateMinGap = () => {
-      const screenWidth = window.innerWidth;
+      const screenWidth = document.documentElement.clientWidth;
       const zoomLevel = window.devicePixelRatio;
       if (zoomLevel >= 1 && screenWidth <= 1024) {
         if (zoomLevel >= 1 && screenWidth < 321) {
