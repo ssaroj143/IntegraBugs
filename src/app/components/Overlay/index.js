@@ -6,68 +6,34 @@ const OverlayScreen = (props) => {
   const ref = useRef(null);
   const toRef = useRef(null);
 
+  useEffect(() => {
+    setFocus()
+  }, []);
+
+  useEffect(() => {
+    overlay && setFocus()
+  }, [overlay])
   const setFocus = () => {
     if (ref && ref.current) {
       toRef.current = setTimeout(() => {
-        const button = ref.current.querySelector("button");
+        const button = ref.current.querySelector("body button");
         if (button) {
           clearTimeout(toRef.current);
           button.focus();
         }
       }, 400);
     }
+
     return () => {
       clearTimeout(toRef.current);
     };
-  };
-
-  const handleArrowNavigation = (e) => {
-    const focusableElements = ref.current.querySelectorAll('button, [role="button"], [tabindex="0"]');
-    const focusableArray = Array.from(focusableElements);
-    const currentIndex = focusableArray.indexOf(document.activeElement);
-    let nextElement;
-    switch (e.key) {
-      case "ArrowDown":
-      case "ArrowRight":
-        e.preventDefault();
-        nextElement = focusableArray[(currentIndex + 1) % focusableArray.length];
-        break;
-      case "ArrowUp":
-      case "ArrowLeft":
-        e.preventDefault();
-        nextElement = focusableArray[(currentIndex - 1 + focusableArray.length) % focusableArray.length];
-        break;
-      default:
-        return;
-    }
-
-    if (nextElement) {
-      nextElement.focus();
-    }
-  };
-
-  useEffect(() => {
-    setFocus();
-    const handleKeydown = (e) => handleArrowNavigation(e);
-
-    if (ref.current) {
-      ref.current.setAttribute('role', 'application');
-      ref.current.addEventListener("keydown", handleKeydown);
-    }
-
-    return () => {
-      if (ref.current) {
-        ref.current.removeEventListener("keydown", handleKeydown);
-      }
-      clearTimeout(toRef.current);
-    };
-  }, [overlay]);
+  }
 
   const overlayClasses = overlay ? "show" : "hide";
   const mobileView = props.isMobileDevice ? "mobile-view" : "";
 
   return (
-    <div ref={ref} className={`${ns}-overlay-container ${overlayClasses}`} tabIndex="0">
+    <div ref={ref} className={`${ns}-overlay-container ${overlayClasses}`}>
       <div className="header">
         <div className="logo"></div>
         <div className="toc-container">
@@ -78,13 +44,13 @@ const OverlayScreen = (props) => {
             tabIndex="-1"
             aria-hidden="true"
           ></div>
-          <span aria-label="Table of Contents" tabIndex="0">
+          <span aria-label="Table Of Contents">
             Table of Contents
           </span>
         </div>
         <div className="right-container">
           <div className="help">
-            <span aria-label="Help" tabIndex="0">
+            <span aria-label="Help">
               Help
             </span>
             <div dangerouslySetInnerHTML={{ __html: svgImages.infoArrow }}></div>
@@ -98,7 +64,7 @@ const OverlayScreen = (props) => {
       </div>
       <div className="footer">
         <div className="restart-section">
-          <span aria-label="Restart Flowchart" tabIndex="0">
+          <span aria-label="Restart Flowchart">
             Restart Flowchart
           </span>
           <div
@@ -110,7 +76,7 @@ const OverlayScreen = (props) => {
         </div>
         <div className="question-marker">
           <div className="quiz-section">
-            <span aria-label="Quiz" tabIndex="0">
+            <span aria-label="Quiz">
               Quiz
             </span>
             <div
@@ -131,7 +97,7 @@ const OverlayScreen = (props) => {
         </div>
         <div className="play-controls">
           <div className="prev-section">
-            <span aria-label="Previous Step" tabIndex="0">
+            <span aria-label="Previous Step">
               Previous Step
             </span>
             <div
@@ -142,7 +108,7 @@ const OverlayScreen = (props) => {
             ></div>
           </div>
           <div className="rewind-section">
-            <span aria-label="Move backward 10 seconds" tabIndex="0">
+            <span aria-label="Move backward 10 seconds">
               Move backward 10 seconds
             </span>
             <div
@@ -153,7 +119,7 @@ const OverlayScreen = (props) => {
             ></div>
           </div>
           <div className="pause-section">
-            <span aria-label="Play/Pause" tabIndex="0">
+            <span aria-label="Play/Pause">
               Play/Pause
             </span>
             <div
@@ -164,7 +130,7 @@ const OverlayScreen = (props) => {
             ></div>
           </div>
           <div className="forward-section">
-            <span aria-label="Move forward 10 seconds" tabIndex="0">
+            <span aria-label="Move forward 10 seconds">
               Move forward 10 seconds
             </span>
             <div
@@ -175,7 +141,7 @@ const OverlayScreen = (props) => {
             ></div>
           </div>
           <div className="next-section">
-            <span aria-label="Next Step" tabIndex="0">
+            <span aria-label="Next Step">
               Next Step
             </span>
             <div
@@ -188,7 +154,7 @@ const OverlayScreen = (props) => {
         </div>
         <div className={`audio-controls ${mobileView}`}>
           <div className="caption-section">
-            <span aria-label="Closed Captions" tabIndex="0">
+            <span aria-label="Closed Captions">
               Closed Captions
             </span>
             <div
@@ -199,7 +165,7 @@ const OverlayScreen = (props) => {
             ></div>
           </div>
           <div className={`volume-section`}>
-            <span aria-label="Volume Control" tabIndex="0">
+            <span aria-label="Volume Control">
               Volume Control
             </span>
             <div

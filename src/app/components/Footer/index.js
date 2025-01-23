@@ -236,11 +236,6 @@ const Footer = (props) => {
       }
     }, 100)
   }
-  useEffect(() => {
-    const body = document.querySelector("body");
-    body.setAttribute('role', 'application');
-    body.setAttribute('aria-hidden', 'true');
-  });
 
   const captionClasses = caption ? "active" : "";
   const _overlay = overlay ? "overlay" : "";
