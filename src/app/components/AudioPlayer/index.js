@@ -141,10 +141,10 @@ const AudioPlayer = (props) => {
             });
           }
         }}
+        role="button"
         title="go to flowchart"
         aria-label="go to flowchart"
         tabIndex="0"
-        aria-pressed={props.play}
       >
         Go to Flowchart
       </button>
